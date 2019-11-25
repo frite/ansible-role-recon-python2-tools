@@ -9,7 +9,9 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 def test_altdns(host):
     ''' Test that altdns and the mode is proper.'''
-    f = host.file('/usr/local/bin/altdns')
+    path = host.find_command('altdns')
+
+    f = host.file(path)
 
     assert f.exists
     assert f.user == 'root'
