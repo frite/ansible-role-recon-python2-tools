@@ -14,7 +14,7 @@
   set_fact:
     "{{ ansible_pkg_mgr }}_packages":
       - git
-      - python2-pip
+      - python-pip
   when: ansible_pkg_mgr == "apt"
 
 - name: Ensure required packages are installed
