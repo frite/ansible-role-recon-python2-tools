@@ -3,11 +3,12 @@
   include_role:
     name: geerlingguy.repo-epel
   when: ansible_distribution == "CentOS"
+
 - name: Register required variables for yum
   set_fact:
     "{{ ansible_pkg_mgr }}_packages":
       - git
-      - python-pip
+      - python2-pip
   when: ansible_pkg_mgr == "yum" or ansible_pkg_mgr == "dnf"
 
 - name: Register packages for APT
