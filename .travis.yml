@@ -6,5 +6,6 @@ services:
   - docker
 install:
   - pip install molecule docker ansible
+  - ansible-galaxy install frite.recon_package_manager
 script:
   - molecule test
