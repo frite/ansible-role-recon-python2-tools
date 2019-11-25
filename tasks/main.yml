@@ -1,0 +1,63 @@
+---
+- name: Install EPEL in CentOS
+  include_role:
+    name: geerlingguy.repo-epel
+  when: ansible_distribution == "CentOS"
+- name: Register required variables for yum
+  set_fact:
+    "{{ ansible_pkg_mgr }}_packages":
+      - git
+      - python-pip
+  when: ansible_pkg_mgr == "yum" or ansible_pkg_mgr == "dnf"
+
+- name: Register packages for APT
+  set_fact:
+    "{{ ansible_pkg_mgr }}_packages":
+      - git
+      - python2-pip
+  when: ansible_pkg_mgr == "apt"
+
+- name: Ensure required packages are installed
+  include_role:
+    name: frite.recon_package_manager
+
+- name: Clone tools  # noqa 401
+  git:
+    repo: "{{ item.value.url }}"
+    dest: "/usr/local/src/{{ item.value.name }}"
+    update: true
+    force: true
+  loop: "{{ clone_tools|dict2items }}"
+  when: clone_tools is defined
+
+- name: Install setuptools
+  pip:
+    name: setuptools
+
+- name: Install pip requirements
+  pip:
+    requirements: "/usr/local/src/{{ item }}/requirements.txt"
+    extra_args: --ignore-installed
+  loop: "{{ pip_args }}"
+  when: pip_args is defined
+
+- name: Python setup.py installs
+  shell: "set -o pipefail; /usr/bin/python2 setup.py install"
+  args:
+    warn: false
+    chdir: "/usr/local/src/{{ item }}/"
+    executable: '/bin/bash'
+  loop: "{{ setup_files }}"
+  when: setup_files is defined
+  changed_when: false
+
+- name: Create softlinks
+  file:
+    src: "/usr/local/src/{{ item.value.repo }}/{{ item.value.file }}"
+    dest: "/usr/local/bin/{{ item.value.soft_link }}"
+    owner: root
+    group: root
+    mode: '0755'
+    state: link
+  loop: "{{ soft_links|dict2items }}"
+  when: soft_links is defined
