@@ -1,48 +1,60 @@
-Role Name
+[![Build Status](https://travis-ci.com/frite/ansible-role-recon-python2-tools.svg?branch=master)](https://travis-ci.com/frite/ansible-role-recon-python2-tools)
+
+recon_python2_tools
 =========
 
-A brief description of the role goes here.
-
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should
-be mentioned here. For instance, if the role uses the EC2 module, it may be a
-good idea to mention in this section that the boto package is required.
+Ansible role to install python 2 tools.
 
 Role Variables
 --------------
+The following variables need to be set.
 
-A description of the settable variables for this role should go here, including
-any variables that are in defaults/main.yml, vars/main.yml, and any variables
-that can/should be set via parameters to the role. Any variables that are read
-from other roles and/or the global scope (ie. hostvars, group vars, etc.) should
-be mentioned here as well.
+```
+clone_tools:
+          altdns:
+            name: altdns
+            url: https://github.com/infosec-au/altdns.git
+          censys:
+            name: censys-enumeration
+            url: https://github.com/0xbharath/censys-enumeration.git
+``` 
+Handles the tools that you want to `git clone` in the server. 
+```
+pip_args:
+          - altdns
+          - censys-enumeration
+```
+Tools that offer `requirements.txt` files. 
+
+```
+        setup_files:
+          - altdns
+```
+Tools that offer `setup.py` files
+```
+        soft_links:
+          censys:
+            repo: censys-enumeration
+            soft_link: censys-enumeration
+            file: censys_enumeration.py
+```
+Tools that are soft linked `ln`.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in
-regards to parameters that may need to be set for other roles, or variables that
-are used from other roles.
+It depends on `frite.recon_package_manager`.
+If you run it on CentOS, you also need `geerlingguy.repo-epel` to deal with the EPEL release repo.
 
-Example Playbook
+
+ Playbook
 ----------------
-
-Including an example of how to use your role (for instance, with variables
-passed in as parameters) is always nice for users too:
 
     - hosts: servers
       roles:
-         - { role: ansible-role-recon-python2-tools, x: 42 }
+         - { role: ansible-role-recon-python2-tools, whatever_vars_here }
 
 License
 -------
 
 BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a
-website (HTML is not allowed).

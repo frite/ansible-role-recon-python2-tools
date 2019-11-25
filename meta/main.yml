@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Manolis Mavrofidis
-  description: Ansible role to install massdns
+  description: Ansible role to install python 2 tools
   company: The internetz
   license: BSD
   role_name: recon_python2_tools
@@ -33,3 +33,4 @@ galaxy_info:
 
 dependencies:
   - frite.recon_package_manager
+  - geerlingguy.repo-epel
