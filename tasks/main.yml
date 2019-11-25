@@ -30,6 +30,7 @@
     force: true
   loop: "{{ clone_tools|dict2items }}"
   when: clone_tools is defined
+  changed_when: false
 
 - name: Install setuptools
   pip:
@@ -62,3 +63,4 @@
     state: link
   loop: "{{ soft_links|dict2items }}"
   when: soft_links is defined
+  changed_when: false
