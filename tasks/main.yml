@@ -2,12 +2,13 @@
 - name: Install EPEL in CentOS
   include_role:
     name: geerlingguy.repo-epel
-  when: ansible_distribution == "CentOS"
+  when: ansible_distribution == 'CentOS'
+
 - name: Register required variables for yum
   set_fact:
     "{{ ansible_pkg_mgr }}_packages":
       - git
-      - python-pip
+      - python2-pip
   when: ansible_pkg_mgr == "yum" or ansible_pkg_mgr == "dnf"
 
 - name: Register packages for APT
@@ -29,6 +30,7 @@
     force: true
   loop: "{{ clone_tools|dict2items }}"
   when: clone_tools is defined
+  changed_when: false
 
 - name: Install setuptools
   pip:
@@ -61,3 +63,4 @@
     state: link
   loop: "{{ soft_links|dict2items }}"
   when: soft_links is defined
+  changed_when: false
