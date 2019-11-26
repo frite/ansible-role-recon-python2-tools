@@ -31,6 +31,4 @@ galaxy_info:
     - security
     - python
 
-dependencies:
-  - frite.recon_package_manager
-  - geerlingguy.repo-epel
+dependencies: []

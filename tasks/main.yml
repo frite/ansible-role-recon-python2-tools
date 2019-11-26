@@ -2,7 +2,7 @@
 - name: Install EPEL in CentOS
   include_role:
     name: geerlingguy.repo-epel
-  when: ansible_distribution == "CentOS"
+  when: ansible_distribution == 'CentOS'
 
 - name: Register required variables for yum
   set_fact:
