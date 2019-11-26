@@ -28,4 +28,3 @@ def test_censys(host):
     assert f.exists
     assert f.user == 'root'
     assert f.group == 'root'
-    assert oct(f.mode) == '0o755'
